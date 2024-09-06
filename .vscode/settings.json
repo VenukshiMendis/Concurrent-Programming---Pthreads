@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "linked_list.h": "c",
+        "time.h": "c",
+        "random_numbers.h": "c",
+        "serial.h": "c",
+        "type_traits": "c"
+    }
+}
