@@ -29,6 +29,7 @@
 
 // number of samples used
 int NUMBER_OF_SAMPLES = 100;
+int needed_samples;
 
 void calculate_mean_and_std(unsigned long *times, unsigned long *mean, unsigned long *std){
     unsigned long total = 0;
@@ -75,8 +76,8 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
     printf("Mean time for serial: %lu microseconds\n", serial_mean);
     printf("Standard deviation for serial: %lu microseconds\n", serial_std);
 
-    int samples = (int)ceil(pow(((100*1.96*serial_std)/(5*serial_mean)), 2));
-    printf("Number of samples needed: %d\n", samples);
+    needed_samples = (int)ceil(pow(((100*1.96*serial_std)/(5*serial_mean)), 2));
+    printf("Number of samples needed: %d\n", needed_samples);
 
     // Mutex execution for 1, 2, 4, and 8 threads
 
@@ -100,8 +101,8 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
         printf("Mean time for mutex with %d threads: %lu microseconds\n", i, mutex_mean);
         printf("Standard deviation for mutex with %d threads: %lu microseconds\n", i, mutex_std);
 
-        int samples = (int)ceil(pow(((100*1.96*mutex_std)/(5*mutex_mean)), 2));
-        printf("Number of samples needed: %d\n", samples);       
+        needed_samples = (int)ceil(pow(((100*1.96*mutex_std)/(5*mutex_mean)), 2));
+        printf("Number of samples needed: %d\n", needed_samples);       
         
     }
 
@@ -126,8 +127,8 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
         printf("Mean time for ReadWriteLock with %d threads: %lu microseconds\n", i, rwlock_mean);
         printf("Standard deviation for ReadWriteLock with %d threads: %lu microseconds\n", i, rwlock_std);
 
-        int samples = (int)ceil(pow(((100*1.96*rwlock_std)/(5*rwlock_mean)), 2));
-        printf("Number of samples needed: %d\n", samples);       
+        needed_samples = (int)ceil(pow(((100*1.96*rwlock_std)/(5*rwlock_mean)), 2));
+        printf("Number of samples needed: %d\n", needed_samples);       
         
     }
 
