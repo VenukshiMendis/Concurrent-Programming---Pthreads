@@ -4,6 +4,7 @@
 #include "serial.h"
 #include "mutex.h"
 #include "read_write_lock.h"
+#include <math.h>
 
 // // Function to measure and print time for serial and mutex operations
 // void run_test_case(int n, int m, float m_member, float m_insert, float m_delete) {
@@ -26,7 +27,22 @@
 //     }
 // }
 
+// number of samples used
+int NUMBER_OF_SAMPLES = 10;
 
+void calculate_mean_and_std(unsigned long *times, unsigned long *mean, unsigned long *std){
+    unsigned long total = 0;
+    for (int i=0; i<NUMBER_OF_SAMPLES; i++){
+        total += times[i];
+    }
+    *mean = total / NUMBER_OF_SAMPLES;
+
+    unsigned long sum_of_squares = 0;
+    for (int i=0; i<NUMBER_OF_SAMPLES; i++){
+        sum_of_squares += pow(times[i] - *mean, 2);
+    }
+    *std = sqrt(sum_of_squares / NUMBER_OF_SAMPLES);
+}
 
 void run_test_case(int n, int m, float m_member, float m_insert, float m_delete) {
     FILE *file = fopen("results.csv", "a"); // Open file in append mode
@@ -43,11 +59,27 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
     }
 
     // Serial execution
-    unsigned long time_in_microseconds = serial(n, m, m_member, m_insert, m_delete);
-    fprintf(file, "Serial,%d,%lu\n\n", 1, time_in_microseconds); // Serial is single-threaded
-    printf("Elapsed time for serial: %lu microseconds\n\n", time_in_microseconds);
+    //unsigned long time_in_microseconds = serial(n, m, m_member, m_insert, m_delete);
+    // fprintf(file, "Serial,%d,%lu\n\n", 1, time_in_microseconds); // Serial is single-threaded
+    // printf("Elapsed time for serial: %lu microseconds\n\n", time_in_microseconds);
+
+    // run the serial execution NUMBER_OF_SAMPLES times
+    unsigned long serial_times[NUMBER_OF_SAMPLES];           
+    for (int i=0; i<NUMBER_OF_SAMPLES; i++){
+        serial_times[i] = serial(n, m, m_member, m_insert, m_delete);
+    }
+
+    unsigned long serial_mean, serial_std;
+    calculate_mean_and_std(serial_times, &serial_mean, &serial_std);
+    fprintf(file, "Serial,%d,%lu,%lu\n\n", 1, serial_mean, serial_std); // Serial is single-threaded
+    printf("Mean time for serial: %lu microseconds\n", serial_mean);
+    printf("Standard deviation for serial: %lu microseconds\n", serial_std);
+
+    int samples = (int)ceil(pow(((100*1.96*serial_std)/(5*serial_mean)), 2));
+    printf("Number of samples needed: %d\n", samples);
 
     // Mutex execution for 1, 2, 4, and 8 threads
+    unsigned long time_in_microseconds;
     for (int i = 1; i <= 8; i *= 2) {
         time_in_microseconds = mutex_program(n, m, m_member, m_insert, m_delete, i);
         fprintf(file, "Mutex,%d,%lu\n", i, time_in_microseconds);
