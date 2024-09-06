@@ -28,7 +28,7 @@
 // }
 
 // number of samples used
-int NUMBER_OF_SAMPLES = 10;
+int NUMBER_OF_SAMPLES = 100;
 
 void calculate_mean_and_std(unsigned long *times, unsigned long *mean, unsigned long *std){
     unsigned long total = 0;
@@ -79,20 +79,58 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
     printf("Number of samples needed: %d\n", samples);
 
     // Mutex execution for 1, 2, 4, and 8 threads
-    unsigned long time_in_microseconds;
-    for (int i = 1; i <= 8; i *= 2) {
-        time_in_microseconds = mutex_program(n, m, m_member, m_insert, m_delete, i);
-        fprintf(file, "Mutex,%d,%lu\n", i, time_in_microseconds);
-        printf("Elapsed time for mutex with %d threads: %lu microseconds\n\n", i, time_in_microseconds);
+
+    // unsigned long time_in_microseconds;
+    // for (int i = 1; i <= 8; i *= 2) {
+    //     time_in_microseconds = mutex_program(n, m, m_member, m_insert, m_delete, i);
+    //     fprintf(file, "Mutex,%d,%lu\n", i, time_in_microseconds);
+    //     printf("Elapsed time for mutex with %d threads: %lu microseconds\n\n", i, time_in_microseconds);
+    // }
+
+
+    // Mutex execution for 1, 2, 4, and 8 threads         
+    for (int i=1; i <= 8; i *= 2){
+        unsigned long mutex_times[NUMBER_OF_SAMPLES];
+        for (int j=0; j<NUMBER_OF_SAMPLES; j++){            
+            mutex_times[j] = mutex_program(n, m, m_member, m_insert, m_delete, i);
+        }
+        unsigned long mutex_mean, mutex_std;
+        calculate_mean_and_std(mutex_times, &mutex_mean, &mutex_std);
+        fprintf(file, "Mutex,%d,%lu,%lu\n", i, mutex_mean, mutex_std);
+        printf("Mean time for mutex with %d threads: %lu microseconds\n", i, mutex_mean);
+        printf("Standard deviation for mutex with %d threads: %lu microseconds\n", i, mutex_std);
+
+        int samples = (int)ceil(pow(((100*1.96*mutex_std)/(5*mutex_mean)), 2));
+        printf("Number of samples needed: %d\n", samples);       
+        
     }
+
     fprintf(file, "\n"); 
 
     // Read Write Lock execution for 1, 2, 4, and 8 threads
-    for (int i = 1; i <= 8; i *= 2) {
-        time_in_microseconds = read_write_lock_program(n, m, m_member, m_insert, m_delete, i);
-        fprintf(file, "ReadWriteLock,%d,%lu\n", i, time_in_microseconds);
-        printf("Elapsed time for read write lock with %d threads: %lu microseconds\n\n", i, time_in_microseconds);
+    // for (int i = 1; i <= 8; i *= 2) {
+    //     time_in_microseconds = read_write_lock_program(n, m, m_member, m_insert, m_delete, i);
+    //     fprintf(file, "ReadWriteLock,%d,%lu\n", i, time_in_microseconds);
+    //     printf("Elapsed time for read write lock with %d threads: %lu microseconds\n\n", i, time_in_microseconds);
+    // }
+
+    // Read Write Lock execution for 1, 2, 4, and 8 threads
+    for (int i=1; i <= 8; i *= 2){
+        unsigned long rwlock_times[NUMBER_OF_SAMPLES];
+        for (int j=0; j<NUMBER_OF_SAMPLES; j++){            
+            rwlock_times[j] = read_write_lock_program(n, m, m_member, m_insert, m_delete, i);
+        }
+        unsigned long rwlock_mean, rwlock_std;
+        calculate_mean_and_std(rwlock_times, &rwlock_mean, &rwlock_std);
+        fprintf(file, "ReadWriteLock,%d,%lu,%lu\n", i, rwlock_mean, rwlock_std);
+        printf("Mean time for ReadWriteLock with %d threads: %lu microseconds\n", i, rwlock_mean);
+        printf("Standard deviation for ReadWriteLock with %d threads: %lu microseconds\n", i, rwlock_std);
+
+        int samples = (int)ceil(pow(((100*1.96*rwlock_std)/(5*rwlock_mean)), 2));
+        printf("Number of samples needed: %d\n", samples);       
+        
     }
+
     fprintf(file, "\n"); 
 
     fclose(file);
