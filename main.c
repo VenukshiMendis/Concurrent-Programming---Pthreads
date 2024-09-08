@@ -48,7 +48,7 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
 
     printf("Mean time for serial: %f microseconds\n", serial_mean);
     printf("Standard deviation for serial: %f microseconds\n", serial_std);
-    printf("Number of samples needed: %d\n", needed_samples);
+    printf("Number of samples needed: %d\n\n", needed_samples);
 
     fprintf(file, "Serial,%d,%f,%f,%d\n\n", 1, serial_mean, serial_std,needed_samples); // Serial is single-threaded
 
@@ -64,7 +64,7 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
         
         printf("Mean time for mutex with %d threads: %f microseconds\n", i, mutex_mean);
         printf("Standard deviation for mutex with %d threads: %f microseconds\n", i, mutex_std);
-        printf("Number of samples needed: %d\n", needed_samples);     
+        printf("Number of samples needed: %d\n\n", needed_samples);     
 
         fprintf(file, "Mutex,%d,%f,%f,%d\n", i, mutex_mean, mutex_std,needed_samples);  
         
@@ -84,7 +84,7 @@ void run_test_case(int n, int m, float m_member, float m_insert, float m_delete)
         
         printf("Mean time for ReadWriteLock with %d threads: %f microseconds\n", i, rwlock_mean);
         printf("Standard deviation for ReadWriteLock with %d threads: %f microseconds\n", i, rwlock_std);        
-        printf("Number of samples needed: %d\n", needed_samples); 
+        printf("Number of samples needed: %d\n\n", needed_samples); 
 
         fprintf(file, "ReadWriteLock,%d,%f,%f,%d\n", i, rwlock_mean, rwlock_std,needed_samples);      
         
