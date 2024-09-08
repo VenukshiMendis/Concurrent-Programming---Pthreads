@@ -72,7 +72,7 @@ unsigned long read_write_lock_program(int n , int m ,float m_member, float m_ins
     int no_of_delete_operations = (int) m * m_delete;
 
     
-    printf("%d, %d, %d \n", no_of_member_operations, no_of_insert_operations, no_of_delete_operations);
+    //printf("%d, %d, %d \n", no_of_member_operations, no_of_insert_operations, no_of_delete_operations);
 
     int *initial_arr = (int*)malloc(n * sizeof(int));
     int *member_arr  = (int*)malloc(no_of_member_operations * sizeof(int));
@@ -87,7 +87,7 @@ unsigned long read_write_lock_program(int n , int m ,float m_member, float m_ins
         Insert(initial_arr[i], &head);
     }
 
-    printf("size of the linked list %d \n", getLinkedlistSize(head));
+    //printf("size of the linked list %d \n", getLinkedlistSize(head));
     //printLinkedlist(head);
 
     // print_array("Member Array", member_arr, no_of_member_operations);
@@ -135,7 +135,7 @@ unsigned long read_write_lock_program(int n , int m ,float m_member, float m_ins
 
    
     //printLinkedlist(data.head);
-    printf("size of the linked list %d \n", getLinkedlistSize(data.head));
+    //printf("size of the linked list %d \n", getLinkedlistSize(data.head));
 
 
     pthread_rwlock_destroy(&rwlock);

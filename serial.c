@@ -12,7 +12,7 @@ unsigned long serial(int n , int m ,float m_member, float m_insert, float m_dele
     int no_of_delete_operations = (int) m * m_delete;
 
     
-    printf("%d, %d, %d \n", no_of_member_operations, no_of_insert_operations, no_of_delete_operations);
+    //printf("%d, %d, %d \n", no_of_member_operations, no_of_insert_operations, no_of_delete_operations);
 
     int *initial_arr = (int*)malloc(n * sizeof(int));
     int *member_arr  = (int*)malloc(no_of_member_operations * sizeof(int));
@@ -28,7 +28,7 @@ unsigned long serial(int n , int m ,float m_member, float m_insert, float m_dele
         Insert(initial_arr[i], &head);
     }
 
-    printf("size of the linked list %d \n", getLinkedlistSize(head));
+    //printf("size of the linked list %d \n", getLinkedlistSize(head));
 
 
     int member_op = 0;
@@ -66,9 +66,9 @@ unsigned long serial(int n , int m ,float m_member, float m_insert, float m_dele
 
     //printf("Elapsed time: %lu microseconds\n", elapsed_time_in_microseconds);
     
-    printf("total no of operations %d \n", total_op);
+    //printf("total no of operations %d \n", total_op);
     
-    printf("size of the linked list %d \n", getLinkedlistSize(head));
+    //printf("size of the linked list %d \n", getLinkedlistSize(head));
 
     free(head);
     free(initial_arr);
