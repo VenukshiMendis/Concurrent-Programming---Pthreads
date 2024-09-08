@@ -12,7 +12,7 @@
    - Alternatively, you can build the project manually using `gcc`:
 
      ```bash
-     gcc -o main main.c serial.c mutex.c read_write_lock.c random_numbers.c linked_list.c -lpthread
+     gcc -o main main.c serial.c mutex.c read_write_lock.c random_numbers.c linked_list.c -lpthread -lm
      ```
 
 2. **Run the Executable**:
